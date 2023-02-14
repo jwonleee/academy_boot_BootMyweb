@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<!-- ~{파일경로 :: 템플릿함수(~{:: 선택자}) } -->
+	<th:block th:replace="~{./include/basicLayout :: layout( ~{:: .wrap} ) }">
+
+	<div class="wrap">
+		<div class="warp_inner">
+
+			<!-- left_menu end -->
+			<div class="right_content">
+				<div class="midiaq">
+					<div class="page_title">관리자검색</div>
+
+					<form name="###########" action="############" method="get" >
+					<div class="search_block flfull">
+
+						<div class="fl">
+							<div>
+								<span class="search_th">상품이름 검색</span>
+								<input type="text" class="" placeholder="상품 검색">
+							</div>
+							
+							<div>
+								<span class="search_th">상품내용 검색</span>
+								<input type="text" class="" placeholder="상품 검색">
+							</div>
+							
+							<div>
+								<span class="search_th">판매가 정렬</span>
+								<select class="" name="">
+									<option value="">정렬방식</option>
+									<option value="">낮은순</option>
+									<option value="">높은순</option>
+								</select>
+							</div>
+
+							<!-- 2row -->
+							<div class="pdt15"></div>
+							<div>
+								<span class="search_th">판매마감일</span>
+								<input type="text" class="datepicker" readonly placeholder="날짜선택" /> -
+								<input type="text" class="datepicker" readonly placeholder="날짜선택" />
+							</div>
+							<!-- 
+							<div>
+								<span class="search_th">처리자 ID</span>
+								<input type="text" class="" placeholder="처리자 ID">
+							</div>
+							 -->
+
+						</div>
+
+						<div class="fr">
+							<div class="search_btn_area">
+								<a href="#" class="normal_btn purplebtn">검색</a>
+								<a href="#" class="normal_btn purplebtn02">등록</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="full_collum collum">
+						<ul>
+							<li class="collum_tit">
+								<h2>상품 관리</h2>
+
+								<select class="">
+									<option value="10">10개 보기</option>
+									<option value="20">20개 보기</option>
+									<option value="40">40개 보기</option>
+									<option value="80">80개 보기</option>
+								</select>
+								<span class="showtoggle minus"></span>
+								<ul>
+									<li>
+										<table cellpadding="0" cellspacing="0" class="col_14" width="100%;">
+											<tr>
+												<th>순서</th>
+												<th>표시</th>
+												<th>상품번호</th>
+												<th>카테고리</th>
+												<th>제목(상품명)</th>
+												<th>등록일</th>
+												<th>판매가</th>
+												<th>재고상태</th>
+												<th>할인율</th>
+												<th>상품 구매제한</th>
+												<th>판매마감일</th>
+												<th>등록자</th>
+											</tr>
+												
+											<tr>
+												<td>1</td>
+												<td>
+													<a href="#" class="normal_btn">정보수정</a>
+													<a href="#" class="normal_btn modalOn">이미지수정</a>													
+												</td>
+												<td>20171518</td>
+												<td>.....</td>
+
+												<td>
+													<a title="상세보기(클릭)" href="product_detail.html">
+														비타오백
+													</a>
+												</td>
+												<td>2017-03-01</td>
+												<td>16,000</td>
+												<td>0개</td>
+												<td>15%</td>
+												<td>판매중</td>
+												<td>처리완료</td>
+												<td>이규호</td>
+
+											</tr>
+										</table>
+
+
+										<div class="page">
+											<ul>
+												<li><a href="#"><i class="fa fa-angle-double-left"
+															aria-hidden="true"></i></a></li>
+												<li style="margin-right:5px;"><a href="#"><i class="fa fa-angle-left"
+															aria-hidden="true"></i></a></li>
+												<li class="on"><a href="#">1</a></li>
+												<li><a href="#">2</a></li>
+												<li><a href="#">3</a></li>
+												<li><a href="#">4</a></li>
+												<li><a href="#">5</a></li>
+												<li style="margin-left:5px;"><a href="#"><i class="fa fa-angle-right"
+															aria-hidden="true"></i></a></li>
+												<li><a href="#"><i class="fa fa-angle-double-right"
+															aria-hidden="true"></i></a></li>
+											</ul>
+										</div>
+									</li>
+
+								</ul>
+							</li>
+						</ul>
+					</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- 모달창 -->
+		<div id="basicModal" class="modal-overlay">
+			<div class="modal-content">
+				<div class="modalOff">X</div>
+				<p class="title">이미지수정</p>
+	
+				<div class="content">
+					<div class="sub-form">
+						<!--미리보기 폼-->
+						<div class="filebox preview-image">
+							<!--1 -->
+							<div class="left">
+									<span>추가이미지</span>
+									<label class="upload-display" for="a_file">
+											<span class="upload-thumb-wrap">
+													<img class="upload-thumb" src="../img/item_main.jpg">
+											</span>
+									</label>
+									<input class="upload-name" value="파일선택" disabled="disabled">
+									<input type="file" name="file" id="a_file" class="upload-hidden">
+									<input type="hidden" value="">
+									<input type="hidden" value="">
+									<button type="button" class="normal_btn" style="display: block;">삭제</button>
+									
+							</div>
+							<div class="left">
+									<span>추가이미지</span>
+									<label class="upload-display" for="b_file">
+											<span class="upload-thumb-wrap">
+													<img class="upload-thumb" src="../img/plus_btn.png">
+											</span>
+									</label>
+									<input class="upload-name" value="파일선택" disabled="disabled">
+									<input type="file" name="file" id="b_file" class="upload-hidden">
+									<input type="hidden" value="">
+									<input type="hidden" value="">
+									<button type="button" class="normal_btn" style="display: block;">삭제</button>
+							</div>
+							<div class="left">
+									<span>추가이미지</span>
+									<label class="upload-display" for="c_file">
+											<span class="upload-thumb-wrap">
+													<img class="upload-thumb" src="../img/plus_btn.png">
+											</span>
+									</label>
+									<input class="upload-name" value="파일선택" disabled="disabled">
+									<input type="file" name="file" id="c_file" class="upload-hidden">
+									<input type="hidden" value="">
+									<input type="hidden" value="">
+									<button type="button" class="normal_btn" style="display: block;">삭제</button>
+							</div>
+
+					</div>
+					</div>
+				</div>
+	
+
+				<div class="btn_area">
+					<a href="수정!!" class="save" >수정</a>
+				</div>
+
+			</div>
+		</div>
+	</div><!-- end wrap -->
+	
+	</th:block>	
+
+</html>
