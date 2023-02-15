@@ -13,26 +13,36 @@
 				<div class="midiaq">
 					<div class="page_title">관리자검색</div>
 
-					<form name="###########" action="############" method="get" >
+					<form name="actionForm" action="productList" method="get" > <!-- name, action 달아주기 -->
+					
+					<!-- 
+					1. 검색폼 에서는 키워드, page, amount 데이터를 넘깁니다.
+					 -->
+					
+					<!-- 히든 태그 만들기 -->
+					<input type="hidden" name="page" th:value="1" />
+					<input type="hidden" name="amount" th:value="${pageVO.amount}" />
+					
 					<div class="search_block flfull">
 
+						<!-- 아래 name값 주기 -->
 						<div class="fl">
 							<div>
 								<span class="search_th">상품이름 검색</span>
-								<input type="text" class="" placeholder="상품 검색">
+								<input type="text" class="" name="searchName" placeholder="상품 검색">
 							</div>
 							
 							<div>
 								<span class="search_th">상품내용 검색</span>
-								<input type="text" class="" placeholder="상품 검색">
+								<input type="text" class="" name="searchContent" placeholder="상품 검색">
 							</div>
 							
 							<div>
 								<span class="search_th">판매가 정렬</span>
-								<select class="" name="">
-									<option value="">정렬방식</option>
-									<option value="">낮은순</option>
-									<option value="">높은순</option>
+								<select class="" name="searchPrice">
+									<option value="none">정렬방식</option> <!-- 여기도 다 적어줌 -->
+									<option value="asc">낮은순</option>
+									<option value="desc">높은순</option>
 								</select>
 							</div>
 
@@ -40,8 +50,8 @@
 							<div class="pdt15"></div>
 							<div>
 								<span class="search_th">판매마감일</span>
-								<input type="text" class="datepicker" readonly placeholder="날짜선택" /> -
-								<input type="text" class="datepicker" readonly placeholder="날짜선택" />
+								<input type="text" class="datepicker" name="startDate" readonly placeholder="날짜선택" /> -
+								<input type="text" class="datepicker" name="endDate" readonly placeholder="날짜선택" />
 							</div>
 							<!-- 
 							<div>
@@ -54,7 +64,10 @@
 
 						<div class="fr">
 							<div class="search_btn_area">
+								<!-- 
 								<a href="#" class="normal_btn purplebtn">검색</a>
+							 	-->
+							 	<input type="submit" class="normal_btn purplebtn" value="검색"/>
 								<a href="#" class="normal_btn purplebtn02">등록</a>
 							</div>
 						</div>
@@ -65,11 +78,11 @@
 							<li class="collum_tit">
 								<h2>상품 관리</h2>
 
-								<select class="">
-									<option value="10">10개 보기</option>
-									<option value="20">20개 보기</option>
-									<option value="40">40개 보기</option>
-									<option value="80">80개 보기</option>
+								<select class="" id="handleAmount"> <!-- js역량, id 달아줌 -->
+									<option value="10" th:selected="${pageVO.amount == 10}">10개 보기</option> <!-- 수정되면 그 값으로 고정 -->
+									<option value="20" th:selected="${pageVO.amount == 20}">20개 보기</option>
+									<option value="40" th:selected="${pageVO.amount == 40}">40개 보기</option>
+									<option value="80" th:selected="${pageVO.amount == 80}">80개 보기</option>
 								</select>
 								<span class="showtoggle minus"></span>
 								<ul>
@@ -89,48 +102,58 @@
 												<th>판매마감일</th>
 												<th>등록자</th>
 											</tr>
-												
-											<tr>
-												<td>1</td>
+											
+											<!-- 여기서 반복문 돌리면서 화면에 뿌려줌 -->
+											<tr th:each="vo, status : ${list}">
+												<td>[[${status.count}]]</td>
 												<td>
 													<a href="#" class="normal_btn">정보수정</a>
 													<a href="#" class="normal_btn modalOn">이미지수정</a>													
 												</td>
-												<td>20171518</td>
+												<td>[[${vo.prod_id}]]</td>
 												<td>.....</td>
 
 												<td>
-													<a title="상세보기(클릭)" href="product_detail.html">
-														비타오백
+													<a title="상세보기(클릭)" th:href="@{ productDetail(prod_id=${vo.prod_id}) }"> <!-- 컨트롤러의 주소로 변경, (키=값)으로 넘기기 -->
+														[[${vo.prod_name}]]
 													</a>
 												</td>
-												<td>2017-03-01</td>
-												<td>16,000</td>
-												<td>0개</td>
-												<td>15%</td>
-												<td>판매중</td>
-												<td>처리완료</td>
-												<td>이규호</td>
+												<td>[[${ #temporals.format(vo.prod_regdate, 'yyyy-MM-dd') }]]</td> <!-- VO에서 localDate하면 알아서 나옴, timeStamp하면 변경해줘야함 -->
+												<td>[[${vo.prod_price}]]원</td>
+												<td>[[${vo.prod_count}]]개</td>
+												<td>[[${vo.prod_discount}]]%</td>
+												<td>[[${vo.prod_purchase_yn == 'Y' ? '제한없음' : '1회제한' }]]</td>
+												<td>[[${vo.prod_enddate}]]</td>
+												<td>[[${vo.prod_writer}]]</td>
 
 											</tr>
+											
 										</table>
 
-
+										
 										<div class="page">
 											<ul>
-												<li><a href="#"><i class="fa fa-angle-double-left"
-															aria-hidden="true"></i></a></li>
-												<li style="margin-right:5px;"><a href="#"><i class="fa fa-angle-left"
-															aria-hidden="true"></i></a></li>
-												<li class="on"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li style="margin-left:5px;"><a href="#"><i class="fa fa-angle-right"
-															aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-angle-double-right"
-															aria-hidden="true"></i></a></li>
+												<!-- 맨 앞으로 -->
+												<li><a th:href="@{productList(page=1, amount=${pageVO.amount} )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+												
+												<!-- 앞페이지 /  아직 -->
+												<th:block th:if="${pageVO.prev}">
+												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1}, amount=${pageVO.amount} )}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+												</th:block>
+												
+												<!-- 페이지네이션 -->
+												<th:block th:each="page, status : ${pageVO.pageList}" > <!-- 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10 -->
+												<li th:class="${page == pageVO.page ? 'on' : ''}"> <!-- pageVO.page는 현재 페이지 -->
+													<a th:href="@{productList(page=${page}, amount=${pageVO.amount} )}">[[${page}]]</a></li>
+												</th:block>
+
+												<!-- 뒷페이지 -->
+												<th:block th:if="${pageVO.next}">
+												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1}, amount=${pageVO.amount})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+												</th:block>
+												
+												<!-- 맨 뒤로 -->
+												<li><a th:href="@{productList(page=${pageVO.realEnd}, amount=${pageVO.amount})}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 											</ul>
 										</div>
 									</li>
@@ -210,6 +233,25 @@
 		</div>
 	</div><!-- end wrap -->
 	
-	</th:block>	
+	</th:block>
+	
+	<script th:inline="javascript"> /* inline으로 해줘야 사용 가능, 템플릿있어서 block밖에 선언 */
+	console.log(2)
+			var msg = JSON.parse('[[${msg}]]'); /* '달러부분 '는 문자열로 받는게 문법적 오류 안생겨서 좋음*/
+		
+		if(msg != null) {
+			alert(msg);
+		}
+			
+			
+		//dataHandler
+		var handleAmount = document.getElementById("handleAmount");
+		handleAmount.onchange = function(e) {
+			console.log(e.target.value); //e.target은 select 태그
+			
+			location.href="productList?page=1&amount=" + e.target.value;
+		}
+	</script>
+
 
 </html>

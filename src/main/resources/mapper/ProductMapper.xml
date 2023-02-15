@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.coding404.myweb.product.service.ProductMapper">
+  	
+  	<insert id="regist" parameterType="ProductVO"> <!-- 원래는 파라미터타입에 풀 경로 들어가야 함 -->
+  		insert into PRODUCT (prod_enddate,
+  							 prod_writer,
+  							 prod_name,
+  							 prod_price,
+  							 prod_count,
+  							 prod_discount,
+  							 prod_purchase_yn,
+  							 prod_content,
+  							 prod_comment)
+  		values(#{prod_enddate},
+  			   #{prod_writer},
+  			   #{prod_name},
+  			   #{prod_price},
+  			   #{prod_count},
+  			   #{prod_discount},
+  			   #{prod_purchase_yn},
+  			   #{prod_content},
+  			   #{prod_comment})
+  	</insert>
+  	
+  	<select id="getList" resultType="ProductVO"> <!-- 한 행에 대한 resultType - ProductVO -->
+  		select * from PRODUCT
+  		where prod_writer = #{user_id}
+  		order by prod_id desc
+  		limit #{cri.pageStart}, #{cri.amount}
+  	</select>
+  	
+  	<select id="getTotal" resultType="int">
+  		select count(*) as total from PRODUCT
+  		where prod_writer = #{user_id}
+  	</select>
+  
+  </mapper>
