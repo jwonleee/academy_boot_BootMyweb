@@ -1,8 +1,6 @@
-package com.coding404.myweb.command;
+package com.coding404.myweb.util;
 
 import java.util.ArrayList;
-
-import com.coding404.myweb.util.Criteria;
 
 import lombok.Data;
 

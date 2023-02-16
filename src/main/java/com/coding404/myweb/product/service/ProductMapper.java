@@ -16,5 +16,5 @@ public interface ProductMapper {
 	//매개변수로 전달되는 데이터가 2개 이상이라면 이름 붙이기
 	public ArrayList<ProductVO> getList(@Param("user_id") String user_id,
 										@Param("cri") Criteria cri); //조회: 특정 회원정보만 조회
-	public int getTotal(String user_id); //전체 게시글수
+	public int getTotal(@Param("user_id") String user_id, @Param("cri") Criteria cri); //전체 게시글수
 }

@@ -26,16 +26,56 @@
   			   #{prod_comment})
   	</insert>
   	
-  	<select id="getList" resultType="ProductVO"> <!-- 한 행에 대한 resultType - ProductVO -->
-  		select * from PRODUCT
-  		where prod_writer = #{user_id}
-  		order by prod_id desc
-  		limit #{cri.pageStart}, #{cri.amount}
-  	</select>
+<select id="getList" resultType="ProductVO">
+        select * from PRODUCT
+        where prod_writer = #{user_id}
+        
+        <if test="cri.startDate != null and cri.startDate != '' ">
+        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') >= date_format(#{cri.startDate}, '%Y-%m-%d')]]>
+        </if>
+
+        <if test="cri.endDate != null and cri.endDate != '' ">
+        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') <= date_format(#{cri.endDate}, '%Y-%m-%d')]]>
+        </if>
+        
+      <if test="cri.searchName != null and cri.searchName != '' ">
+      and prod_name like concat('%', #{cri.searchName}, '%')
+      </if>
+      <if test="cri.searchContent != null and cri.searchContent != '' ">
+      and prod_content like concat('%', #{cri.searchContent}, '%')
+      </if>
+      
+      order by
+      <if test="cri.searchPrice == 'asc' ">
+      prod_price asc,
+      </if>
+      <if test="cri.searchPrice == 'desc' ">
+      prod_price desc, 
+      </if>
+      prod_id desc
+      
+        limit #{cri.pageStart}, #{cri.amount}
+     </select>
   	
   	<select id="getTotal" resultType="int">
   		select count(*) as total from PRODUCT
   		where prod_writer = #{user_id}
+  		
+  		<if test="cri.startDate != null and cri.startDate != '' ">
+  		<![CDATA[
+  		and date_format(PROD_ENDDATE, '%Y-%m-%d') >= date_format(#{cri.startDate}, '%Y-%m-%d')
+		]]> </if>
+		<if test="cri.endDate != null and cri.endDate != '' ">
+		<![CDATA[
+		and date_format(PROD_ENDDATE, '%Y-%m-%d') <= date_format(#{cri.endDate}, '%Y-%m-%d')
+		]]> </if>
+		<if test="cri.searchName != null and cri.searchName != '' ">
+		and prod_name like concat('%',#{cri.searchName},'%')
+		</if>
+		<if test="cri.searchContent != null and cri.searchContent != '' ">
+		and prod_content like concat('%',#{cri.searchContent},'%')
+		</if>
+		
   	</select>
   
   </mapper>

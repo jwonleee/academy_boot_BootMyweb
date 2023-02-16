@@ -29,20 +29,20 @@
 						<div class="fl">
 							<div>
 								<span class="search_th">상품이름 검색</span>
-								<input type="text" class="" name="searchName" placeholder="상품 검색">
+								<input type="text" class="" name="searchName" th:value="${pageVO.cri.searchName}" placeholder="상품 검색">
 							</div>
 							
 							<div>
 								<span class="search_th">상품내용 검색</span>
-								<input type="text" class="" name="searchContent" placeholder="상품 검색">
+								<input type="text" class="" name="searchContent" th:value="${pageVO.cri.searchContent}" placeholder="상품 검색">
 							</div>
 							
 							<div>
 								<span class="search_th">판매가 정렬</span>
 								<select class="" name="searchPrice">
-									<option value="none">정렬방식</option> <!-- 여기도 다 적어줌 -->
-									<option value="asc">낮은순</option>
-									<option value="desc">높은순</option>
+									<option value="none" th:selected="${pageVO.cri.searchPrice} == 'none'">정렬방식</option> <!-- 여기도 다 적어줌 -->
+									<option value="asc" th:selected="${pageVO.cri.searchPrice} == 'asc'">낮은순</option>
+									<option value="desc" th:selected="${pageVO.cri.searchPrice} == 'desc'">높은순</option>
 								</select>
 							</div>
 
@@ -50,8 +50,8 @@
 							<div class="pdt15"></div>
 							<div>
 								<span class="search_th">판매마감일</span>
-								<input type="text" class="datepicker" name="startDate" readonly placeholder="날짜선택" /> -
-								<input type="text" class="datepicker" name="endDate" readonly placeholder="날짜선택" />
+								<input type="text" class="datepicker" name="startDate" th:value="${pageVO.cri.startDate}" readonly placeholder="날짜선택" /> -
+								<input type="text" class="datepicker" name="endDate" th:value="${pageVO.cri.endDate}" readonly placeholder="날짜선택" />
 							</div>
 							<!-- 
 							<div>
@@ -131,31 +131,92 @@
 										</table>
 
 										
+										<!-- <div class="page">
+											<ul>
+												맨 앞으로
+												<li><a th:href="@{productList(page=1, amount=${pageVO.amount} )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+												
+												앞페이지 /  아직
+												<th:block th:if="${pageVO.prev}">
+												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1}, amount=${pageVO.amount} )}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+												</th:block>
+												
+												페이지네이션
+												<th:block th:each="page, status : ${pageVO.pageList}" > 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10
+												<li th:class="${page == pageVO.page ? 'on' : ''}"> pageVO.page는 현재 페이지
+													<a th:href="@{productList(page=${page}, amount=${pageVO.amount} )}">[[${page}]]</a></li>
+												</th:block>
+
+												뒷페이지
+												<th:block th:if="${pageVO.next}">
+												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1}, amount=${pageVO.amount})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+												</th:block>
+												
+												맨 뒤로
+												<li><a th:href="@{productList(page=${pageVO.realEnd}, amount=${pageVO.amount})}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+											</ul>
+										</div> -->
+										
 										<div class="page">
 											<ul>
 												<!-- 맨 앞으로 -->
-												<li><a th:href="@{productList(page=1, amount=${pageVO.amount} )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+												<li><a th:href="@{productList(page=1,
+																			  amount=${pageVO.amount},
+																			  startDate=${pageVO.cri.startDate},
+																			  endDate=${pageVO.cri.endDate},
+																			  searchName=${pageVO.cri.searchName},
+																			  searchContent=${pageVO.cri.searchContent},
+																			  searchPrice=${pageVO.cri.searchPrice}
+																			   )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
 												
 												<!-- 앞페이지 /  아직 -->
 												<th:block th:if="${pageVO.prev}">
-												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1}, amount=${pageVO.amount} )}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1},
+																						  				amount=${pageVO.amount},
+																						  				startDate=${pageVO.cri.startDate},
+																					 					endDate=${pageVO.cri.endDate},
+																					  					searchName=${pageVO.cri.searchName},
+																					  					searchContent=${pageVO.cri.searchContent},
+																					  					searchPrice=${pageVO.cri.searchPrice}
+																					   					)}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
 												</th:block>
 												
 												<!-- 페이지네이션 -->
 												<th:block th:each="page, status : ${pageVO.pageList}" > <!-- 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10 -->
 												<li th:class="${page == pageVO.page ? 'on' : ''}"> <!-- pageVO.page는 현재 페이지 -->
-													<a th:href="@{productList(page=${page}, amount=${pageVO.amount} )}">[[${page}]]</a></li>
+													<a th:href="@{productList(page=${page},
+																			  amount=${pageVO.amount},
+																			  startDate=${pageVO.cri.startDate},
+																			  endDate=${pageVO.cri.endDate},
+																			  searchName=${pageVO.cri.searchName},
+																			  searchContent=${pageVO.cri.searchContent},
+																			  searchPrice=${pageVO.cri.searchPrice}
+																			   )}">[[${page}]]</a></li>
 												</th:block>
 
 												<!-- 뒷페이지 -->
 												<th:block th:if="${pageVO.next}">
-												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1}, amount=${pageVO.amount})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1},
+																									   amount=${pageVO.amount},
+																									   startDate=${pageVO.cri.startDate},
+																			  						   endDate=${pageVO.cri.endDate},
+																			  						   searchName=${pageVO.cri.searchName},
+																			  						   searchContent=${pageVO.cri.searchContent},
+																			  						   searchPrice=${pageVO.cri.searchPrice})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
 												</th:block>
 												
 												<!-- 맨 뒤로 -->
-												<li><a th:href="@{productList(page=${pageVO.realEnd}, amount=${pageVO.amount})}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+												<li><a th:href="@{productList(page=${pageVO.realEnd},
+																			  amount=${pageVO.amount},
+																			  startDate=${pageVO.cri.startDate},
+																			  endDate=${pageVO.cri.endDate},
+																			  searchName=${pageVO.cri.searchName},
+																			  searchContent=${pageVO.cri.searchContent},
+																			  searchPrice=${pageVO.cri.searchPrice}
+																			  )}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 											</ul>
 										</div>
+										
 									</li>
 
 								</ul>
@@ -249,7 +310,11 @@
 		handleAmount.onchange = function(e) {
 			console.log(e.target.value); //e.target은 select 태그
 			
-			location.href="productList?page=1&amount=" + e.target.value;
+			//location.href="productList?page=1&amount=" + e.target.value;
+			//폼을 체인지 시켜줌
+			document.actionForm.amount.value = e.target.value;
+			document.actionForm.submit();
+			
 		}
 	</script>
 

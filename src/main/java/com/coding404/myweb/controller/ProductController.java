@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,12 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.coding404.myweb.command.PageVO;
 import com.coding404.myweb.command.ProductVO;
 import com.coding404.myweb.product.service.ProductService;
 import com.coding404.myweb.util.Criteria;
+import com.coding404.myweb.util.PageVO;
 
 @Controller
 @RequestMapping("/product")
@@ -38,6 +40,12 @@ public class ProductController {
 					   Model model,
 					   Criteria cri) { //로그인한 정보를 저장 (session or request)
 		
+		/*
+		 * 1. 검색폼 에서는 키워드, page, amount 데이터를 넘깁니다.
+		 * 2. 목록조회 and total 동적쿼리로 변경
+		 * 3. 페이지네이션에 키워드, page, amount 데이터를 넘깁니다.
+		 */
+		
 		//프로세스
 		//user_id란 이름으로 admin을 넣어놓고 사용할 예정, 사용할 값이 없어서 강제로
 		session.setAttribute("user_id", "admin");
@@ -53,7 +61,7 @@ public class ProductController {
 		model.addAttribute("list",list);
 		
 		//페이지네이션 처리
-		int total = productService.getTotal(user_id);
+		int total = productService.getTotal(user_id, cri);
 		PageVO pageVO = new PageVO(cri, total);
 		System.out.println(pageVO.toString()); //확인
 		model.addAttribute("pageVO", pageVO);
@@ -83,6 +91,13 @@ public class ProductController {
 		return "redirect:/product/productList";
 	}
 	
+	
 	//
+	@ResponseBody
+	@GetMapping("/xxx")
+	public String xxx() {
+		
+		return "경로";
+	}
 	
 }
