@@ -111,7 +111,9 @@
 													<a href="#" class="normal_btn modalOn">이미지수정</a>													
 												</td>
 												<td>[[${vo.prod_id}]]</td>
-												<td>.....</td>
+												<!-- 중간에 확인하려고 사용 -->
+												<!-- <td>[[${vo.prod_category == null ? '없음' : vo.prod_category}]]</td> -->
+												<td>[[${vo.category_nav == null ? '없음' : vo.category_nav}]]</td>
 
 												<td>
 													<a title="상세보기(클릭)" th:href="@{ productDetail(prod_id=${vo.prod_id}) }"> <!-- 컨트롤러의 주소로 변경, (키=값)으로 넘기기 -->
@@ -230,6 +232,7 @@
 		</div>
 
 		<!-- 모달창 -->
+		<script src="/js/modal.js"></script>
 		<div id="basicModal" class="modal-overlay">
 			<div class="modal-content">
 				<div class="modalOff">X</div>

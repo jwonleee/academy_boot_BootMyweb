@@ -90,15 +90,15 @@ $(document).ready(function() {
 });
 /* 카테고리 */
 function getCategory_List(e) {
-	e.preventDefault(); //고유이벤트중지
-	if( e.target.tagName != 'A') return; //태그검증
-	var obj = $(e.target).data("set"); //데이터셋을 가져옴
+	e.preventDefault(); //a태그니까 고유이벤트중지
+	if( e.target.tagName != 'A') return; //a태그가 아니면 태그검증
+	var obj = $(e.target).data("set"); //(클릭한 대상에 jquery의 data를 쓰면) 데이터셋을 가져옴, js에서는 dataSet 사용했음
 
-	//토글색처리
+	//토글색처리 - css 처리
 	$(e.currentTarget).find("a").removeClass("sub_menu_select");
 	$(e.target).addClass("sub_menu_select");
 	//태그처리
-	if(obj.category_lv == 1 || obj.category_lv == 2) {
+	if(obj.category_lv == 1 || obj.category_lv == 2) { //3단 카테고리니까 1, 2까지만 클릭하면 됨
 		console.log('1lv');
 		$().loading(); //로딩
 		$(e.currentTarget).category_remove(); //이전 카테고리삭제
@@ -106,11 +106,26 @@ function getCategory_List(e) {
 		//////////////////////////////////////////////////
 		//비동기콜백에서 category_create() 호출
 		//비동기호출후 category_set() 호출
-		category_create(); //다음 카테고리생성
-		//////////////////////////////////////////////////
-
+		//category_create(); //다음 카테고리생성
 		
-	} 
+		console.log(obj);
+		$.ajax({
+			url: "../getCategoryChild/" + obj.group_id + "/" + obj.category_lv + "/" + obj.category_detail_lv,
+			type: "get",
+			success: function(result) {
+			console.log(result);
+			category_create(result);
+			},
+			error: function(err) {
+				alert("카테고리 조회에 실패했습니다. 관리자에게 문의해주세요.");
+			}
+		})
+		//////////////////////////////////////////////////
+	}
+	
+	//0220 17:10
+	//카테고리 키값 처리 (선택한 값의 group_id, category_pk를 처리)
+	$(e.target).category_set();
 	
 }
 //카테고리세팅
@@ -120,6 +135,7 @@ $.fn.category_set = function() {
 	$("input[name='prod_category']").val(group_id + category_id ); //name이 prod_category인 곳에 추가
 }
 //이전카테고리 삭제JS
+//1번 분류 다 선택하고, 2번 누르면 기존에 눌렸던거 다 없어져야 하니까
 $.fn.category_remove = function() {
 	while(this.next().length != 0) {
 		$(this).next().remove();
@@ -129,11 +145,11 @@ $.fn.category_remove = function() {
 function category_create(data) {
 
 	//예시데이터
-	var data = [
+	/*var data = [
 	 {category_lv: 2, group_id: 'B', category_detail_nm: '값선택', category_detail_parent_nm: '값선택'},
 	 {category_lv: 2, group_id: 'B', category_detail_nm: '값선택', category_detail_parent_nm: '값선택'},
 	 {category_lv: 2, group_id: 'B', category_detail_nm: '값선택', category_detail_parent_nm: '값선택'}
-  ];
+  ];*/
 
 	var category = "";
 	category += '<ul class="categoryList" style="position: relative;" onclick="getCategory_List(event);" >';

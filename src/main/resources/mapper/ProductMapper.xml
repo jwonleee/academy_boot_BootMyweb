@@ -7,6 +7,7 @@
   	
   	<insert id="regist" parameterType="ProductVO"> <!-- 원래는 파라미터타입에 풀 경로 들어가야 함 -->
   		insert into PRODUCT (prod_enddate,
+  							 prod_category,
   							 prod_writer,
   							 prod_name,
   							 prod_price,
@@ -16,6 +17,7 @@
   							 prod_content,
   							 prod_comment)
   		values(#{prod_enddate},
+  			   #{prod_category},
   			   #{prod_writer},
   			   #{prod_name},
   			   #{prod_price},
@@ -27,34 +29,58 @@
   	</insert>
   	
 <select id="getList" resultType="ProductVO">
-        select * from PRODUCT
-        where prod_writer = #{user_id}
-        
-        <if test="cri.startDate != null and cri.startDate != '' ">
-        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') >= date_format(#{cri.startDate}, '%Y-%m-%d')]]>
-        </if>
+	select p.*,
+	   	   c.category_nav
+	from (
+			select * from PRODUCT
+	        where prod_writer = #{user_id}
+	        
+	        <if test="cri.startDate != null and cri.startDate != '' ">
+	        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') >= date_format(#{cri.startDate}, '%Y-%m-%d')]]>
+	        </if>
+	
+	        <if test="cri.endDate != null and cri.endDate != '' ">
+	        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') <= date_format(#{cri.endDate}, '%Y-%m-%d')]]>
+	        </if>
+	        
+		      <if test="cri.searchName != null and cri.searchName != '' ">
+		      and prod_name like concat('%', #{cri.searchName}, '%')
+		      </if>
+		      <if test="cri.searchContent != null and cri.searchContent != '' ">
+		      and prod_content like concat('%', #{cri.searchContent}, '%')
+		      </if>
+		      
+		      order by
+		      <if test="cri.searchPrice == 'asc' ">
+		      prod_price asc,
+		      </if>
+		      <if test="cri.searchPrice == 'desc' ">
+		      prod_price desc, 
+		      </if>
+		      prod_id desc
+		      limit #{cri.pageStart}, #{cri.amount}
+	) p
+	left outer join (
+		SELECT
+		   #A1.*,
+	       #A2.CATEGORY_DETAIL_NM,
+	       #A3.CATEGORY_DETAIL_NM,
+		   #CONCAT(A1.group_ID, A1.CATEGORY_ID, A1.category_LV,  A1.category_detail_LV) AS CATEGORY_KEY,
+	       CONCAT(A1.group_ID, A1.CATEGORY_ID) AS CATEGORY_KEY,
+	 	   CASE A1.category_parent_LV
+	 	        WHEN 0 THEN A1.category_detail_NM
+	 			WHEN 1 THEN CONCAT(A2.category_detail_NM,' > ', A1.category_detail_NM)
+	 			WHEN 2 THEN CONCAT(A3.category_detail_NM, ' > ', A2.category_detail_NM,' > ', A1.category_detail_NM)
+	 	   END as CATEGORY_NAV
+	FROM PRODUCT_CATEGORY A1
+	LEFT OUTER JOIN PRODUCT_CATEGORY A2
+	ON A1.CATEGORY_PARENT_LV = A2.CATEGORY_LV AND A1.CATEGORY_DETAIL_PARENT_LV = A2.CATEGORY_DETAIL_LV AND A1.GROUP_ID = A2.GROUP_ID
+	LEFT OUTER JOIN PRODUCT_CATEGORY A3
+	ON A2.CATEGORY_PARENT_LV = A3.CATEGORY_LV AND A2.CATEGORY_DETAIL_PARENT_LV = A3.CATEGORY_DETAIL_LV
+	ORDER BY CATEGORY_NAV ASC
+	) c
+	on p.PROD_CATEGORY = c.category_key
 
-        <if test="cri.endDate != null and cri.endDate != '' ">
-        <![CDATA[and date_format(prod_enddate, '%Y-%m-%d') <= date_format(#{cri.endDate}, '%Y-%m-%d')]]>
-        </if>
-        
-      <if test="cri.searchName != null and cri.searchName != '' ">
-      and prod_name like concat('%', #{cri.searchName}, '%')
-      </if>
-      <if test="cri.searchContent != null and cri.searchContent != '' ">
-      and prod_content like concat('%', #{cri.searchContent}, '%')
-      </if>
-      
-      order by
-      <if test="cri.searchPrice == 'asc' ">
-      prod_price asc,
-      </if>
-      <if test="cri.searchPrice == 'desc' ">
-      prod_price desc, 
-      </if>
-      prod_id desc
-      
-        limit #{cri.pageStart}, #{cri.amount}
      </select>
   	
   	<select id="getTotal" resultType="int">
@@ -75,7 +101,20 @@
 		<if test="cri.searchContent != null and cri.searchContent != '' ">
 		and prod_content like concat('%',#{cri.searchContent},'%')
 		</if>
-		
+  	</select>
+  	
+  	<!-- 카테고리 대분류 -->
+  	<select id="getCategory" resultType="CategoryVO">
+  		select * from PRODUCT_CATEGORY
+  		where category_lv = 1
+  	</select>
+  	
+  	<!-- 카테고리 중, 소분류 group_id, parent_lv, detail_parent_lv에 매칭 -->
+  	<select id="getCategoryChild" resultType="CategoryVO">
+  		select * from PRODUCT_CATEGORY
+  		where group_id = #{group_id}
+  		and category_parent_lv = #{category_lv}
+  		and category_detail_parent_lv = #{category_detail_lv}
   	</select>
   
   </mapper>

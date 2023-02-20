@@ -35,6 +35,9 @@ public class ProductVO {
 	@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}")
 	private String prod_enddate;
 	private String prod_category; //insert할 때는 아직없음
+	private String category_nav; //카테고리 조인된 결과
+	
+	
 	@NotBlank(message = "공백일 수 없습니다")
 	private String prod_writer;
 	@NotBlank(message = "공백일 수 없습니다")

@@ -1,10 +1,12 @@
 package com.coding404.myweb.product.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coding404.myweb.command.CategoryVO;
 import com.coding404.myweb.command.ProductVO;
 import com.coding404.myweb.util.Criteria;
 
@@ -29,6 +31,16 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getTotal(user_id, cri);
 	}
 	
+	@Override
+	public List<CategoryVO> getCategory() {
+		
+		return productMapper.getCategory();
+	}
+
+	@Override
+	public List<CategoryVO> getCategoryChild(CategoryVO vo) {
+		return productMapper.getCategoryChild(vo);
+	}
 	
 
 }

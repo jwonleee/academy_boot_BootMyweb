@@ -32,7 +32,9 @@
                                                     <th>카테고리</th>
                                                     <td colspan="5" >
                                                         
-                                                        <input type="hidden" name="prod_category" value="">
+                                                        <!-- 0220 15:07 히든을 우선 풀어놓고 확인, 선택한 값을 value에 넣어야함 -->
+                                                        <!-- 카테고리 값을 담는 태그 -->
+                                                        <input type="text" name="prod_category" value="">
 
                                                         <div class="loading" style="display: none;">
                                                             <div class="loader" ></div>
@@ -41,7 +43,9 @@
 
                                                         <div style="color:red">상품등록 완료 후에는 수정이 불가능하니 신중히 선택해주세요.</div>
                                                         <div class="categoryListWrap">
-                                                            <ul class="categoryList" style="position: relative;" onclick="getCategory_List(event);" >
+                                                        	<!-- 0220 12:10 화면을 그려서 html로 넣는다 -->
+                                                        	
+                                                            <!-- <ul class="categoryList" style="position: relative;" onclick="getCategory_List(event);" >
                                                                 <li><a href="#" data-set='{"category_lv": "1", "group_id": "A" }'>패션의류</a></li>
                                                                 <li><a href="#" data-set='{"category_lv": "1", "group_id": "B" }'>뷰티</a></li>
                                                                 <li><a href="#" data-set='{"category_lv": "1", "group_id": "C" }'>식품</a></li>
@@ -61,7 +65,7 @@
                                                                 <li><a href="#" data-set='{"category_lv": "3", "group_id": "A" }'>ccc</a></li>
                                                                 <li><a href="#" data-set='{"category_lv": "3", "group_id": "A" }'>ccc</a></li>
                                                                 
-                                                            </ul>
+                                                            </ul> -->
                                                         </div>
                                                     
                                                     </td>
@@ -263,5 +267,39 @@
 
 
 	</th:block>
+	
+	<!-- 2/20 11:43 추가 -->
+	<script>
+		//화면이 로드가 일어난 후에 실행 (카테고리 데이터)
+		//basic layout에 보면 jquery를 가지고 오도록 되어있기때문에 사용가능
+		$(document).ready(function() {
+			
+			$.ajax({
+				url: "../getCategory",
+				type: "get",
+				success: function(result) {
+					console.log(result)
+					
+					var str = "";
+					
+					str += '<ul class="categoryList" style="position: relative;" onclick="getCategory_List(event);" >';
+					
+					//반복문 돌리면서 li 태그 넣기
+					result.forEach(function(item, index) {
+						str += '<li><a href="#" data-set=' + JSON.stringify(item)  + '>' + item.category_detail_nm + '</a></li>';
+					})
+					
+					str += '</ul>';
+                	
+					$(".categoryListWrap").append(str); //자식으로 추가
+				},
+				error: function(err) {
+					alert("카테고리 조회에 실패했습니다. 담당자에게 문의하세요.")
+				}
+			})
+			
+		});
+	</script>
+	
 
 </html>
