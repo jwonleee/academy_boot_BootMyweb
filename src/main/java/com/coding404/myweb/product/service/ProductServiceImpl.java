@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 			//중복파일의 처리 - 랜덤한 String 값
 			String uuid = UUID.randomUUID().toString();
 			//최종 저장 경로
-			String savename  = uploadpath + "\\" + uuid + "_" + filename;
+			String savename  = uploadpath + "\\" + filepath + "\\" + uuid + "_" + filename;
 
 	
 			try {
@@ -118,6 +118,10 @@ public class ProductServiceImpl implements ProductService {
 	public List<CategoryVO> getCategoryChild(CategoryVO vo) {
 		return productMapper.getCategoryChild(vo);
 	}
-	
 
+	@Override
+	public List<ProductUploadVO> getProductImg(ProductVO vo) {
+		return productMapper.getProductImg(vo);
+	}
+	
 }

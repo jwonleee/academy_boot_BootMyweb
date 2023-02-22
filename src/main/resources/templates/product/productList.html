@@ -108,6 +108,7 @@
 												<td>[[${status.count}]]</td>
 												<td>
 													<a href="#" class="normal_btn">정보수정</a>
+													<!-- 1. modalOn 클래스가 들어가면 모달창 2. modalOn() 으로 켤 수 있음-->
 													<a href="#" class="normal_btn modalOn">이미지수정</a>													
 												</td>
 												<td>[[${vo.prod_id}]]</td>
@@ -243,6 +244,9 @@
 						<!--미리보기 폼-->
 						<div class="filebox preview-image">
 							<!--1 -->
+							
+							<!-- 아래 주석 부분을 동적으로 그려야 함, appendChild 사용 -->
+							<!-- 
 							<div class="left">
 									<span>추가이미지</span>
 									<label class="upload-display" for="a_file">
@@ -283,7 +287,7 @@
 									<input type="hidden" value="">
 									<button type="button" class="normal_btn" style="display: block;">삭제</button>
 							</div>
-
+ 							-->
 					</div>
 					</div>
 				</div>
@@ -309,7 +313,7 @@
 			
 			
 		//dataHandler
-		var handleAmount = document.getElementById("handleAmount");
+		var handleAmount = document.getElementById("handleAmount"); //js 사용
 		handleAmount.onchange = function(e) {
 			console.log(e.target.value); //e.target은 select 태그
 			
@@ -320,6 +324,76 @@
 			
 		}
 	</script>
+	
+	
+	<!-- 1. modalOn 클래스가 들어가면 모달창 2. modalOn() 으로 켤 수 있음-->
+	<!-- 모달창 제어 -->
+	<script>
+		//이미지 수정버튼을 클릭했을 때 modalOn();
+		$(".modalOn").click(function(e) { //jquery 사용
+			e.preventDefault(); //a링크의 고유이벤트 중지
+			
+			//ajax - 이미지데이터 조회 (prod_id 기준으로 조회)
+			//1. 클릭한 대상의 prod_id값
+			var prod_id = $(e.target).closest("td").next().html();
+			//console.log(prod_id) 확인
+			
+			//2. post방식으로 img데이터 조회
+			$.ajax({
+				url: "../getProductImg",
+				type: "post",
+				data: JSON.stringify({prod_id: prod_id}), //제이슨 데이터
+				contentType: "application/json", //보내는 데이터에 대한 타입
+				success: function(result){
+					console.log(result); //반환된 데이터
+					
+					var str = "";
+					var arr = ['a', 'b', 'c']; //배열 생성
+					
+					for(var i = 0; i < result.length; i++) {
+						str += '<div class="left">';
+						str += '<span>추가이미지</span>';
+						str += '<label class="upload-display" for="' + arr[i] +'_file">';
+						str += '<span class="upload-thumb-wrap">';
+						str += '<img class="upload-thumb" src="' + '../display' + '/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename + '">'; /* 상대경로, 한단계 위로 올라가서 display... */
+						str += '</span>';
+						str += '</label>';
+						str += '<input class="upload-name" value="파일선택" disabled="disabled">';
+						str += '<input type="file" name="file" id="' + arr[i] + '_file" class="upload-hidden">';
+						str += '<input type="hidden" value="">';
+						str += '<input type="hidden" value="">';
+						str += '<button type="button" class="normal_btn" style="display: block;">삭제</button>';
+						
+						/* 다운로드 기능 추가 */
+						//1번 방법 - a 링크로 바꿔서 보내기
+						//str += '<a href="'+ '../download' + '/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename +'" class="normal_btn" style="display: block;">다운로드</a>';
+						
+						//2번 방법 - js로 onclick 사용
+						//str += '<button type="button" class="normal_btn" style="display: block;" onclick="location.href=`'+'../download/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename +'`">다운로드</button>';
+						
+						//3번 방법 - jquery 사용해서 a링크 만든 다음 이벤트 위임
+						str += '<button type="button" class="normal_btn" style="display: block;">';
+						str += '<a href="../download' + '/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename + '">다운로드</a></button>';
+						
+						str += '</div>';
+					}
+					
+					$(".filebox").html(str);
+					
+					$(".downFile").on("click", "a", function(event) {
+						event.preventDefault(); //막는다
+					});
+					
+				}, 
+				error: function(err) {
+					alert("이미지 조회에 실패했습니다.");
+				}
+			})
+			
+			
+		});
+	</script>
+	
 
 
 </html>

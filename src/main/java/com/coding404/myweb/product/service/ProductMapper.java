@@ -27,4 +27,7 @@ public interface ProductMapper {
 	//카테고리 중, 소분류
 	public List<CategoryVO> getCategoryChild(CategoryVO vo);
 	
+	//이미지 데이터 조회
+	public List<ProductUploadVO> getProductImg(ProductVO vo);
+	
 }

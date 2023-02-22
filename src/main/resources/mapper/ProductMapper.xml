@@ -139,4 +139,9 @@
   		and category_detail_parent_lv = #{category_detail_lv}
   	</select>
   
+    <!-- 이미지 데이터 조회 -->
+  	<select id="getProductImg" resultType="ProductUploadVO">
+  		select * from PRODUCT_UPLOAD where prod_id = #{prod_id}
+  	</select>
+  
   </mapper>
