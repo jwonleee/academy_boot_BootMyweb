@@ -10,7 +10,8 @@
                 <div class="midiaq">
                     <div class="page_title">상품 관리 > 상품 등록</div>
 
-                    <form name="productForm" action="registForm" method="post">
+					<!-- 2/21 enctype 추가 -->
+                    <form name="productForm" action="registForm" method="post" enctype="multipart/form-data">
                         <div class="full_collum collum">
                             <ul>
                                 <li class="collum_tit">
@@ -268,8 +269,17 @@
 
 	</th:block>
 	
+	<!-- 2/21 16:07 추가 -->
+	<script th:inline="javascript">
+		var msg = JSON.parse('[[${msg}]]'); /* '달러부분 '는 문자열로 받는게 문법적 오류 안생겨서 좋음*/
+		
+		if(msg != null) {
+			alert(msg);
+		}
+	</script>
+	
 	<!-- 2/20 11:43 추가 -->
-	<script>
+	<script th:inline="javascript">
 		//화면이 로드가 일어난 후에 실행 (카테고리 데이터)
 		//basic layout에 보면 jquery를 가지고 오도록 되어있기때문에 사용가능
 		$(document).ready(function() {

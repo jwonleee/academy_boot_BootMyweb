@@ -28,6 +28,28 @@
   			   #{prod_comment})
   	</insert>
   	
+  	<!-- 
+  	1. insert전에 product 테이블의 키값을 selectKey 태그를 이용해서 얻습니다.
+  	2. resultType은 조회된 결과 타입,
+  		keyProperty는 sql에 전달되는 vo의 저장할 key값
+  		order는 before, after - 인서트 이전에 실행 or 인서트 이후에 실행
+  	★ selectKey 한 겂을 ProductUploadVO에 넣어줄거고, 그것을 prod_id에 집어넣을거다-->
+  	
+  	<insert id="registFile" parameterType="ProductUploadVO">
+  		<selectKey resultType="int" keyProperty="prod_id" order="BEFORE">
+  			select max(prod_id) as prod_id from PRODUCT where prod_writer = #{prod_writer}
+  		</selectKey>
+  		
+  		insert into product_upload(filename,
+  									filepath,
+  									uuid,
+  									prod_id,
+  									prod_writer)
+  									
+  		values(#{filename}, #{filepath}, #{uuid}, #{prod_id}, #{prod_writer})
+  	
+  	</insert>
+  	
 <select id="getList" resultType="ProductVO">
 	select p.*,
 	   	   c.category_nav

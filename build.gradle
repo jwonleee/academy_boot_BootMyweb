@@ -34,6 +34,9 @@ dependencies {
 	
 	//slq로그
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	
+	//이미지 썸네일 (필수 아님, 0221 15:39)
+	implementation 'net.coobird:thumbnailator:0.4.8'
 }
 
 tasks.named('test') {
