@@ -345,7 +345,7 @@
 				data: JSON.stringify({prod_id: prod_id}), //제이슨 데이터
 				contentType: "application/json", //보내는 데이터에 대한 타입
 				success: function(result){
-					console.log(result); //반환된 데이터
+					//console.log(result); //반환된 데이터
 					
 					var str = "";
 					var arr = ['a', 'b', 'c']; //배열 생성
@@ -371,18 +371,22 @@
 						//2번 방법 - js로 onclick 사용
 						//str += '<button type="button" class="normal_btn" style="display: block;" onclick="location.href=`'+'../download/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename +'`">다운로드</button>';
 						
-						//3번 방법 - jquery 사용해서 a링크 만든 다음 이벤트 위임
-						str += '<button type="button" class="normal_btn" style="display: block;">';
-						str += '<a href="../download' + '/' + result[i].filepath + '/' + result[i].uuid + '/' + result[i].filename + '">다운로드</a></button>';
+						str += '<button type="button" class="normal_btn" style="display: block;">다운로드</button>';
 						
 						str += '</div>';
 					}
 					
-					$(".filebox").html(str);
-					
-					$(".downFile").on("click", "a", function(event) {
-						event.preventDefault(); //막는다
-					});
+					   $(".filebox").html(str);
+		               
+		               $(".filebox").on("click", "button", function(e) {
+		            	  
+		            	  var id = $(e.target).prev().prev().prev().prev().attr("id").replace('_file', '');
+		            	  
+		            	  var index = arr.indexOf(id);
+		            	 
+		                  e.preventDefault(); //고유이벤트 중지
+		                  location.href="../download/" + result[index].filepath + "/" + result [index].uuid + "/" + result[index].filename;
+		               })
 					
 				}, 
 				error: function(err) {

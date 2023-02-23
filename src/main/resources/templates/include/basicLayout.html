@@ -42,9 +42,9 @@
         <span class="menuBtn">버튼</span>
         <ul class="sidenav">
             <li class="sub_menu_toggle">
-                <a href="#">- 상품관리(예제)</a>
-                <ul class="sub_menu ">
-                    <li><a th:href="@{/product/productReg}">-상품등록</a></li>
+                <a href="#" >- 상품관리(예제)</a>
+                <ul class="sub_menu " >
+                    <li><a th:href="@{/product/productReg}" >-상품등록</a></li>
                     <li><a th:href="@{/product/productList}">-상품조회 / 수정</a></li>
                     <li><a href="#">-하단메뉴</a></li>
                 </ul>
@@ -131,6 +131,43 @@
 
 </body>
 
+<script th:inline="javascript">
+	//console.log(JSON.parse('[[${uri}]]')) <!--캡쳐보면 필요한 값을 가지고 나갈 수 있음-->
+
+	/* 
+		메뉴선택 유지 - 
+		sub_menu에 display:block,
+		sub_menu ▶ a링크에 on 클래스,
+		sub_menu_toggle ▶ a에 sub_menu_selectz 클래스
+	*/
+	var menu = JSON.parse('[[${uri}]]'); //postHandler에서 보내주는 uri
+
+	
+	//1. 반복 안 돌리기
+	console.log($("a[href*='" + menu + "']"));
+	$("a[href*='" + menu + "']").addClass("on");
+	//이 아래처럼 쭉쭉쭉 같이하면 반복 안돌리고 가능
+
+	//2. 반복 돌리기	
+	$(".sub_menu a").each(function(index, item) { //반복을 돌려서 콜백함수로
+		//console.log(index, item); //a태그
+		//console.log($(item));
+
+		//attr - 속성값 가져오기
+		//console.log($(item).attr("href"));
+		 
+		if( $(item).attr("href").includes(menu) ) {
+			//console.log("확인");
+			$(item).addClass("on"); //a태그에 on클래스 추가 - 위 주석에서 a링크에 on클래스 부분
+			$(item).closest(".sub_menu").css("display", "block"); //위 주석에서 display: block 부분
+			$(item).closest(".sub_menu").prev().addClass("sub_menu_select"); //sub_menu쪽 세가지 작업 처리 
+		}
+	})
+</script>
+
+
 </th:block>
 
 </html>
+
+

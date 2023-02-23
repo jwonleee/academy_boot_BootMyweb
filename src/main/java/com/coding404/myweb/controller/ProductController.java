@@ -52,7 +52,7 @@ public class ProductController {
 		
 		//프로세스
 		//user_id란 이름으로 admin을 넣어놓고 사용할 예정, 사용할 값이 없어서 강제로
-		session.setAttribute("user_id", "admin");
+		//session.setAttribute("user_id", "admin");
 		
 		System.out.println(cri.toString());
 		
