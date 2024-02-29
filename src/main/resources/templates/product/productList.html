@@ -131,92 +131,11 @@
 											</tr>
 											
 										</table>
-
 										
-										<!-- <div class="page">
-											<ul>
-												맨 앞으로
-												<li><a th:href="@{productList(page=1, amount=${pageVO.amount} )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
-												
-												앞페이지 /  아직
-												<th:block th:if="${pageVO.prev}">
-												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1}, amount=${pageVO.amount} )}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-												</th:block>
-												
-												페이지네이션
-												<th:block th:each="page, status : ${pageVO.pageList}" > 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10
-												<li th:class="${page == pageVO.page ? 'on' : ''}"> pageVO.page는 현재 페이지
-													<a th:href="@{productList(page=${page}, amount=${pageVO.amount} )}">[[${page}]]</a></li>
-												</th:block>ㄴ
-
-												뒷페이지
-												<th:block th:if="${pageVO.next}">
-												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1}, amount=${pageVO.amount})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-												</th:block>
-												
-												맨 뒤로
-												<li><a th:href="@{productList(page=${pageVO.realEnd}, amount=${pageVO.amount})}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
-											</ul>
-										</div> -->
-										
+										<!-- ~{파일경로 :: 템플릿함수(~{:: 선택자}) } -->
+										<!-- 검색, 페이징 모듈화 -->
 										<div class="page">
-											<ul>
-												<!-- 맨 앞으로 -->
-												<li><a th:href="@{productList(page=1,
-																			  amount=${pageVO.amount},
-																			  startDate=${pageVO.cri.startDate},
-																			  endDate=${pageVO.cri.endDate},
-																			  searchName=${pageVO.cri.searchName},
-																			  searchContent=${pageVO.cri.searchContent},
-																			  searchPrice=${pageVO.cri.searchPrice}
-																			   )}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
-												
-												<!-- 앞페이지 /  아직 -->
-												<th:block th:if="${pageVO.prev}">
-												<li style="margin-right:5px;"><a th:href="@{productList(page=${pageVO.start - 1},
-																						  				amount=${pageVO.amount},
-																						  				startDate=${pageVO.cri.startDate},
-																					 					endDate=${pageVO.cri.endDate},
-																					  					searchName=${pageVO.cri.searchName},
-																					  					searchContent=${pageVO.cri.searchContent},
-																					  					searchPrice=${pageVO.cri.searchPrice}
-																					   					)}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-												</th:block>
-												
-												<!-- 페이지네이션 -->
-												<th:block th:each="page, status : ${pageVO.pageList}" > <!-- 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10 -->
-												<li th:class="${page == pageVO.page ? 'on' : ''}"> <!-- pageVO.page는 현재 페이지 -->
-													<a th:href="@{productList(page=${page},
-																			  amount=${pageVO.amount},
-																			  startDate=${pageVO.cri.startDate},
-																			  endDate=${pageVO.cri.endDate},
-																			  searchName=${pageVO.cri.searchName},
-																			  searchContent=${pageVO.cri.searchContent},
-																			  searchPrice=${pageVO.cri.searchPrice}
-																			   )}">[[${page}]]</a></li>
-												</th:block>
-
-												<!-- 뒷페이지 -->
-												<th:block th:if="${pageVO.next}">
-												<li style="margin-left:5px;"><a th:href="@{productList(page=${pageVO.end + 1},
-																									   amount=${pageVO.amount},
-																									   startDate=${pageVO.cri.startDate},
-																			  						   endDate=${pageVO.cri.endDate},
-																			  						   searchName=${pageVO.cri.searchName},
-																			  						   searchContent=${pageVO.cri.searchContent},
-																			  						   searchPrice=${pageVO.cri.searchPrice})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-												</th:block>
-												
-												<!-- 맨 뒤로 -->
-												<li><a th:href="@{productList(page=${pageVO.realEnd},
-																			  amount=${pageVO.amount},
-																			  startDate=${pageVO.cri.startDate},
-																			  endDate=${pageVO.cri.endDate},
-																			  searchName=${pageVO.cri.searchName},
-																			  searchContent=${pageVO.cri.searchContent},
-																			  searchPrice=${pageVO.cri.searchPrice}
-																			  )}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
-											</ul>
+											<th:block th:replace="/include/page :: pageModule( ${pageVO} )"></th:block>
 										</div>
 										
 									</li>
