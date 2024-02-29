@@ -33,7 +33,6 @@ public class TestCode {
 //							   
 //			productMapper.regist(vo);
 //		}
-//		
 //	}
 	
 	
@@ -44,10 +43,9 @@ public class TestCode {
 //		System.out.println(list.toString());
 //	}
 	
-	
-	
-	
-	
-	
+	@Test
+	public void testCode03() {
+		
+	}
 	
 }

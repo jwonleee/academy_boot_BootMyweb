@@ -19,11 +19,8 @@ public class MenuHandler implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-	
-		String uri = request.getRequestURI();
-		request.setAttribute("uri", uri);
-		
-		
+		String uri = request.getRequestURI(); //전체주소 - 포트번호
+		request.setAttribute("uri", uri); //세션에 데이터 저장(키, 값)		
 	}
 
 	

@@ -5,6 +5,11 @@
   
   <mapper namespace="com.coding404.myweb.product.service.ProductMapper">
   	
+  	<select id="isCategoryExists" resultType="int">
+    SELECT COUNT(*) FROM product_category 
+    WHERE CONCAT(GROUP_ID, CATEGORY_LV, CATEGORY_DETAIL_LV) = #{prod_category}
+</select>
+  	
   	<insert id="regist" parameterType="ProductVO"> <!-- 원래는 파라미터타입에 풀 경로 들어가야 함 -->
   		insert into PRODUCT (prod_enddate,
   							 prod_category,
@@ -33,7 +38,19 @@
   	2. resultType은 조회된 결과 타입,
   		keyProperty는 sql에 전달되는 vo의 저장할 key값
   		order는 before, after - 인서트 이전에 실행 or 인서트 이후에 실행
-  	★ selectKey 한 겂을 ProductUploadVO에 넣어줄거고, 그것을 prod_id에 집어넣을거다-->
+  	★ selectKey 한 값을 ProductUploadVO에 넣어줄거고, 그것을 prod_id에 집어넣을거다-->
+  	<!-- insert이전에 prod_id가 필요한데, 값을 구할 방법이 없다!
+		서비스의 regist메서드에서 prod_writer는 화면에서 넘어오는데 prod_id는 넘어오지 않는다.
+		따라서, 시퀀스를 사용하거나 해야 하는데, mysql은 시퀀스가 없다.
+
+		=>
+		mybatis의
+		<selectKey>태그
+		-order는 순서. insert 이전인가 이후인가.
+		-resultType은 조회된 결과 타입.
+		-keyProperty는 sql에 전달되는 vo에 저장할 key값. vo의 멤버변수에 저장하겠다는 선언.
+
+		이 태그는 insert태그 안에 있다. 따라서 select ~ as 이름으로 얻은 값을 insert의 sql구문에서 #{}로 사용할 수 있다. -->
   	
   	<insert id="registFile" parameterType="ProductUploadVO">
   		<selectKey resultType="int" keyProperty="prod_id" order="BEFORE">
@@ -124,6 +141,35 @@
 		and prod_content like concat('%',#{cri.searchContent},'%')
 		</if>
   	</select>
+  	
+  	<!-- 글 상세 -->
+  	<select id="getDetail" resultType="ProductVO">
+	select p.*,
+	   	   c.category_nav
+	from (
+			select * from `product` where prod_id = #{prod_id}
+	) p
+	left outer join (
+		SELECT
+		   #A1.*,
+	       #A2.CATEGORY_DETAIL_NM,
+	       #A3.CATEGORY_DETAIL_NM,
+		   #CONCAT(A1.group_ID, A1.CATEGORY_ID, A1.category_LV,  A1.category_detail_LV) AS CATEGORY_KEY,
+	       CONCAT(A1.group_ID, A1.CATEGORY_ID) AS CATEGORY_KEY,
+	 	   CASE A1.category_parent_LV
+	 	        WHEN 0 THEN A1.category_detail_NM
+	 			WHEN 1 THEN CONCAT(A2.category_detail_NM,' > ', A1.category_detail_NM)
+	 			WHEN 2 THEN CONCAT(A3.category_detail_NM, ' > ', A2.category_detail_NM,' > ', A1.category_detail_NM)
+	 	   END as CATEGORY_NAV
+	FROM PRODUCT_CATEGORY A1
+	LEFT OUTER JOIN PRODUCT_CATEGORY A2
+	ON A1.CATEGORY_PARENT_LV = A2.CATEGORY_LV AND A1.CATEGORY_DETAIL_PARENT_LV = A2.CATEGORY_DETAIL_LV AND A1.GROUP_ID = A2.GROUP_ID
+	LEFT OUTER JOIN PRODUCT_CATEGORY A3
+	ON A2.CATEGORY_PARENT_LV = A3.CATEGORY_LV AND A2.CATEGORY_DETAIL_PARENT_LV = A3.CATEGORY_DETAIL_LV
+	ORDER BY CATEGORY_NAV ASC
+	) c
+	on p.PROD_CATEGORY = c.category_key
+     </select>
   	
   	<!-- 카테고리 대분류 -->
   	<select id="getCategory" resultType="CategoryVO">

@@ -13,7 +13,8 @@ import com.coding404.myweb.util.Criteria;
 
 @Mapper
 public interface ProductMapper {
-
+	
+	public int isCategoryExists(String prod_category);
 	public int regist(ProductVO vo);
 	public int registFile(ProductUploadVO vo);
 	//웬만해서는 파라미터 2개 이상 쓰는건 좋지 않음. 얘가 잘 모르니까 param이용해서 확실히 알려주기
@@ -21,6 +22,8 @@ public interface ProductMapper {
 	public ArrayList<ProductVO> getList(@Param("user_id") String user_id,
 										@Param("cri") Criteria cri); //조회: 특정 회원정보만 조회
 	public int getTotal(@Param("user_id") String user_id, @Param("cri") Criteria cri); //전체 게시글수
+	//글 상세조회
+	public ProductVO getDetail(int prod_id);
 	
 	//카테고리 대분류
 	public List<CategoryVO> getCategory();

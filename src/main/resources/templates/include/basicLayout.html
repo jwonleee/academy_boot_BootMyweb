@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<!-- 전체가가 하나의 템플릿화 되었음, 함수에는 매개변수 받을 수 있음 -->
+<!-- 전체가 하나의 템플릿화 되었음, 함수에는 매개변수 받을 수 있음 -->
 <th:block th:fragment="layout(section)"> <!-- 템플릿으로 쓸 곳 fragment, 함수(layout)을 하나 가져옴 -->
 
 <head>
@@ -21,6 +21,8 @@
 	<script src="/js/jquery-1.12.1.min.js"></script>
 	<script src="/js/jquery-ui.min.js"></script>
 	<script src="/js/style.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script> <!--ckeditor-->
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script> <!--한글 사용-->
 </head>
 
 	<!--개인 -->
@@ -89,7 +91,7 @@
 						<!-- 상위 -->
 						<ul class="fl_right">
 								<li><a href="#"><span>Coding404 둘러보기</span></a></li>
-								<li><a href="#"><span>상품등록</span></a></li>
+								<li><a th:href="@{/product/productReg}"><span>상품등록</span></a></li>
 								<li><a href="#"><span>상품관리</span></a></li>
 								<li><a href="#"><span>상품수정</span></a></li>
 								<li><a href="#"><span>회원</span></a></li>

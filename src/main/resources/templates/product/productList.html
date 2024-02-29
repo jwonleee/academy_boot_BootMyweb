@@ -68,7 +68,7 @@
 								<a href="#" class="normal_btn purplebtn">검색</a>
 							 	-->
 							 	<input type="submit" class="normal_btn purplebtn" value="검색"/>
-								<a href="#" class="normal_btn purplebtn02">등록</a>
+								<button type="button" onclick="location.href = 'productReg'" class="normal_btn purplebtn02">등록</button>
 							</div>
 						</div>
 					</div>
@@ -125,7 +125,7 @@
 												<td>[[${vo.prod_price}]]원</td>
 												<td>[[${vo.prod_count}]]개</td>
 												<td>[[${vo.prod_discount}]]%</td>
-												<td>[[${vo.prod_purchase_yn == 'Y' ? '제한없음' : '1회제한' }]]</td>
+												<td>[[${vo.prod_purchase_yn == 'Y' ? '1회제한' : '제한없음' }]]</td>
 												<td>[[${vo.prod_enddate}]]</td>
 												<td>[[${vo.prod_writer}]]</td>
 
@@ -148,7 +148,7 @@
 												<th:block th:each="page, status : ${pageVO.pageList}" > 일반 for문이 없어서 vo안의 pageList를 받아서 page변수에 넣음, page변수는 1, 2, 3, 4,... 10
 												<li th:class="${page == pageVO.page ? 'on' : ''}"> pageVO.page는 현재 페이지
 													<a th:href="@{productList(page=${page}, amount=${pageVO.amount} )}">[[${page}]]</a></li>
-												</th:block>
+												</th:block>ㄴ
 
 												뒷페이지
 												<th:block th:if="${pageVO.next}">
@@ -232,6 +232,28 @@
 			</div>
 		</div>
 
+	<!-- 검색시 페이지네이션 유지 하려고 amount 관리 -->
+	<script th:inline="javascript"> /* inline으로 해줘야 사용 가능, 템플릿있어서 block밖에 선언 */
+			console.log(2);
+			var msg = JSON.parse('[[${msg}]]'); /* '달러부분 '는 문자열로 받는게 문법적 오류 안생겨서 좋음*/
+		
+		if(msg != null) {
+			alert(msg);
+		}
+			
+		//dataHandler
+		var handleAmount = document.getElementById("handleAmount"); //js 사용
+		handleAmount.onchange = function(e) {
+			console.log(e.target.value); //e.target은 select 태그
+			
+			//location.href="productList?page=1&amount=" + e.target.value;
+			//폼을 체인지 시켜줌
+			document.actionForm.amount.value = e.target.value;
+			document.actionForm.submit();
+		}
+	</script>
+
+
 		<!-- 모달창 -->
 		<script src="/js/modal.js"></script>
 		<div id="basicModal" class="modal-overlay">
@@ -244,7 +266,6 @@
 						<!--미리보기 폼-->
 						<div class="filebox preview-image">
 							<!--1 -->
-							
 							<!-- 아래 주석 부분을 동적으로 그려야 함, appendChild 사용 -->
 							<!-- 
 							<div class="left">
@@ -292,7 +313,6 @@
 					</div>
 				</div>
 	
-
 				<div class="btn_area">
 					<a href="수정!!" class="save" >수정</a>
 				</div>
@@ -303,27 +323,7 @@
 	
 	</th:block>
 	
-	<script th:inline="javascript"> /* inline으로 해줘야 사용 가능, 템플릿있어서 block밖에 선언 */
-	console.log(2)
-			var msg = JSON.parse('[[${msg}]]'); /* '달러부분 '는 문자열로 받는게 문법적 오류 안생겨서 좋음*/
-		
-		if(msg != null) {
-			alert(msg);
-		}
-			
-			
-		//dataHandler
-		var handleAmount = document.getElementById("handleAmount"); //js 사용
-		handleAmount.onchange = function(e) {
-			console.log(e.target.value); //e.target은 select 태그
-			
-			//location.href="productList?page=1&amount=" + e.target.value;
-			//폼을 체인지 시켜줌
-			document.actionForm.amount.value = e.target.value;
-			document.actionForm.submit();
-			
-		}
-	</script>
+	
 	
 	
 	<!-- 1. modalOn 클래스가 들어가면 모달창 2. modalOn() 으로 켤 수 있음-->
@@ -393,7 +393,6 @@
 					alert("이미지 조회에 실패했습니다.");
 				}
 			})
-			
 			
 		});
 	</script>

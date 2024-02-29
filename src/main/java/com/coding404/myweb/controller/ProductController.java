@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +34,20 @@ public class ProductController {
 	@Autowired
 	@Qualifier("productService")
 	private ProductService productService;
-	//화면은 getMapping ?
 	
+	//등록 화면
 	@GetMapping("/productReg")
-	public String reg() {
+	public String reg() {	
 		return "/product/productReg";
 	}
 	
+	//모달창 확인
+	@GetMapping("modal")
+	public String modal() {
+		return "/product/modal";
+	}
+	
+	//상품 조회 화면
 	@GetMapping("/productList")
 	public String list(HttpSession session, /* HttpServletRequest request */
 					   Model model,
@@ -52,9 +61,8 @@ public class ProductController {
 		
 		//프로세스
 		//user_id란 이름으로 admin을 넣어놓고 사용할 예정, 사용할 값이 없어서 강제로
-		//session.setAttribute("user_id", "admin");
-		
-		System.out.println(cri.toString());
+		session.setAttribute("user_id", "admin");
+//		System.out.println(cri.toString());
 		
 		//로그인한 회원만 조회
 		//(가정)현재 로그인 되어있는 회원
@@ -67,27 +75,51 @@ public class ProductController {
 		//페이지네이션 처리
 		int total = productService.getTotal(user_id, cri);
 		PageVO pageVO = new PageVO(cri, total);
-		System.out.println(pageVO.toString()); //확인
+//		System.out.println(pageVO.toString());
 		model.addAttribute("pageVO", pageVO);
 		
 		return "/product/productList";
 	}
 	
+	//상품 상세 화면
 	@GetMapping("/productDetail")
-	public String detail() {
+	public String detail(@RequestParam("prod_id") int prod_id, Model model) {
+		ProductVO vo = productService.getDetail(prod_id);
+		model.addAttribute("vo", vo);
 		
-		///////////////////////////////////////////////
-		/////////////////////숙제///////////////////////
-		///////////////////////////////////////////////
+		System.out.println("상품 상세 카테고리: " + vo.getCategory_nav());
 		
 		return "/product/productDetail";
 	}
 	
+	
 	//등록요청
 	@PostMapping("/registForm")
-	public String registForm(/* @Valid */ProductVO vo,
-							 RedirectAttributes ra,
-							 @RequestParam("file") List<MultipartFile> list) { //유효성검사 화면넘기는? 처리는 안했음
+	public String registForm(@Valid ProductVO vo, Errors errors, Model model,
+							 RedirectAttributes ra, //특정 속성을 리다이렉트되는 뷰 페이지에서 사용할 수 있도록 전달
+							 @RequestParam("file") List<MultipartFile> list) {
+		
+	    
+		if (errors.hasErrors()) { // 유효성 검사
+		    List<FieldError> errorList = errors.getFieldErrors();
+		    for (FieldError err : errorList) {
+		        if (err.isBindingFailure()) { // 자바 내부의 에러라면 true 반환
+		            model.addAttribute("valid_" + err.getField(), "형식이 올바르지 않습니다");
+		        } else { // 유효성 검사의 실패
+		            model.addAttribute("valid_" + err.getField(), err.getDefaultMessage());
+		        }
+		    }
+		    model.addAttribute("vo", vo); // 사용자가 적은 값은 VO에 담김
+		    return "product/productReg";
+		}
+
+		// 카테고리 확인
+		String categoryCheckMessage = productService.isCategoryExists(vo.getProd_category());
+		if (categoryCheckMessage != null) {
+		    model.addAttribute("msg", categoryCheckMessage);
+		    model.addAttribute("vo", vo);
+		    return "product/productReg";
+		}
 		
 		//파일업로드 작업 ▶
 		//리스트에서 빈값은 제거
@@ -114,11 +146,9 @@ public class ProductController {
 	}
 	
 	
-	//
 	@ResponseBody
 	@GetMapping("/xxx")
 	public String xxx() {
-		
 		return "경로";
 	}
 	

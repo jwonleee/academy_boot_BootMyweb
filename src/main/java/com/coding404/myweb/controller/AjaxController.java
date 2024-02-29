@@ -118,7 +118,7 @@ public class AjaxController {
 		return entity;
 	}
 	
-	//prod_id 값 받아서 이미지 정보를 반환 (함수의 모현을 선언) - 녹음
+	//prod_id 값 받아서 이미지 정보를 반환 (함수의 모형을 선언) - 녹음
 	@PostMapping("/getProductImg")
 	public ResponseEntity<List<ProductUploadVO>> getProductImg(@RequestBody ProductVO vo) {
 		

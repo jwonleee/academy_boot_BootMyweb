@@ -169,4 +169,27 @@ $.fn.loading = function() {
 	}, 1000);
 }
 
+/* ckeditor */
+  $(document).ready(function() {
+        ClassicEditor.create(document.querySelector('#editor'), {
+            removePlugins: ['Heading'],
+            toolbar: [
+                '|',
+                'bold',
+                'italic'],
+            language: "ko"
+        }).catch(error => {
+            console.log(error);
+        });
 
+        ClassicEditor.create(document.querySelector('#editor2'), {
+            removePlugins: ['Heading'],
+            toolbar: [
+                '|',
+                'bold',
+                'italic'],
+            language: "ko"
+        }).catch(error => {
+            console.log(error);
+        });
+    });
