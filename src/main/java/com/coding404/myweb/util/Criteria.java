@@ -9,7 +9,6 @@ public class Criteria {
 	private int page; //조회하는 페이지 번호
 	private int amount; //데이터 개수
 	
-	
 	//검색 키워드
 	private String searchName; //상품명
 	private String searchContent; //상품내용
@@ -32,7 +31,5 @@ public class Criteria {
 	public int getPageStart() { //앞쪽에 들어갈 변수
 		return (page - 1) * amount;
 	}
-	
-	
 	
 }

@@ -25,7 +25,6 @@ public class PageVO {
 	private ArrayList<Integer> pageList; //화면에 반복시킬 페이지 번호
 	
 	
-	
 	public PageVO(Criteria cri, int total) {
 		this.page = cri.getPage();
 		this.amount = cri.getAmount();

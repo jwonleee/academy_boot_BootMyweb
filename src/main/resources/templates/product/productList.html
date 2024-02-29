@@ -13,7 +13,7 @@
 				<div class="midiaq">
 					<div class="page_title">관리자검색</div>
 
-					<form name="actionForm" action="productList" method="get" > <!-- name, action 달아주기 -->
+					<form id="productListForm" name="actionForm" action="productList" method="get" > <!-- name, action 달아주기 -->
 					
 					<!-- 
 					1. 검색폼 에서는 키워드, page, amount 데이터를 넘깁니다.
@@ -40,7 +40,7 @@
 							<div>
 								<span class="search_th">판매가 정렬</span>
 								<select class="" name="searchPrice">
-									<option value="none" th:selected="${pageVO.cri.searchPrice} == 'none'">정렬방식</option> <!-- 여기도 다 적어줌 -->
+									<option value="none" th:selected="${pageVO.cri.searchPrice} == 'none'">정렬방식</option> <!-- 동적쿼리로 설정 -->
 									<option value="asc" th:selected="${pageVO.cri.searchPrice} == 'asc'">낮은순</option>
 									<option value="desc" th:selected="${pageVO.cri.searchPrice} == 'desc'">높은순</option>
 								</select>
@@ -64,10 +64,9 @@
 
 						<div class="fr">
 							<div class="search_btn_area">
-								<!-- 
-								<a href="#" class="normal_btn purplebtn">검색</a>
-							 	-->
-							 	<input type="submit" class="normal_btn purplebtn" value="검색"/>
+								<!--<a href="#" class="normal_btn purplebtn">검색</a>-->
+							 	<!--<input type="submit" class="normal_btn purplebtn" value="검색"/> 이렇게 하면 js 작성X-->
+							 	<button type="button" onclick="document.getElementById('productListForm').submit()" class="normal_btn purplebtn"/>검색</button>
 								<button type="button" onclick="location.href = 'productReg'" class="normal_btn purplebtn02">등록</button>
 							</div>
 						</div>
@@ -234,7 +233,6 @@
 
 	<!-- 검색시 페이지네이션 유지 하려고 amount 관리 -->
 	<script th:inline="javascript"> /* inline으로 해줘야 사용 가능, 템플릿있어서 block밖에 선언 */
-			console.log(2);
 			var msg = JSON.parse('[[${msg}]]'); /* '달러부분 '는 문자열로 받는게 문법적 오류 안생겨서 좋음*/
 		
 		if(msg != null) {
@@ -244,7 +242,7 @@
 		//dataHandler
 		var handleAmount = document.getElementById("handleAmount"); //js 사용
 		handleAmount.onchange = function(e) {
-			console.log(e.target.value); //e.target은 select 태그
+			//console.log(e.target.value); //e.target은 select 태그, 10,20,40,80
 			
 			//location.href="productList?page=1&amount=" + e.target.value;
 			//폼을 체인지 시켜줌

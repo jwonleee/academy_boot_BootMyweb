@@ -7,8 +7,8 @@
   	
   	<select id="isCategoryExists" resultType="int">
     SELECT COUNT(*) FROM product_category 
-    WHERE CONCAT(GROUP_ID, CATEGORY_LV, CATEGORY_DETAIL_LV) = #{prod_category}
-</select>
+    WHERE CONCAT(GROUP_ID, CATEGORY_ID) = #{prod_category}
+	</select>
   	
   	<insert id="regist" parameterType="ProductVO"> <!-- 원래는 파라미터타입에 풀 경로 들어가야 함 -->
   		insert into PRODUCT (prod_enddate,
