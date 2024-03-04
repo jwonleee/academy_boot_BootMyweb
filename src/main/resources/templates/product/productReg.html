@@ -111,8 +111,7 @@
 												<tr>
 													<th>등록자ID</th>
 													<td><input type="text" class="inputw150" name="prod_writer"
-															th:value="${vo != null ? vo.prod_writer : ''}"/>
-														<span id="valid">[[${valid_prod_writer}]]</span>
+															th:value="${session.user_id}" />
 													</td>
 												</tr>
 
@@ -180,17 +179,17 @@
 															</div>
 															<!--2(추가하려면 for, id를 변경하여 추가) -->
 															<!--
-                                                        <div class="left">
-                                                            <span>추가이미지</span>
-                                                            <label class="upload-display" for="c_file">
-                                                                <span class="upload-thumb-wrap">
-                                                                    <img class="upload-thumb" src="../img/plus_btn.png">
-                                                                </span>
-                                                            </label>
-                                                            <input class="upload-name" value="파일선택" disabled="disabled">
-                                                            <input type="file" name="file" id="c_file" class="upload-hidden">
-                                                        </div>
-                                                        -->
+	                                                        <div class="left">
+	                                                            <span>추가이미지</span>
+	                                                            <label class="upload-display" for="c_file">
+	                                                                <span class="upload-thumb-wrap">
+	                                                                    <img class="upload-thumb" src="../img/plus_btn.png">
+	                                                                </span>
+	                                                            </label>
+	                                                            <input class="upload-name" value="파일선택" disabled="disabled">
+	                                                            <input type="file" name="file" id="c_file" class="upload-hidden">
+	                                                        </div>
+	                                                        -->
 														</div>
 
 													</td>

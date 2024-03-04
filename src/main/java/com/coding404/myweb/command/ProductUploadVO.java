@@ -21,5 +21,4 @@ public class ProductUploadVO {
 	
 	private int prod_id;
 	private String prod_writer;
-	
 }

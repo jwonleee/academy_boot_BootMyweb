@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
@@ -18,6 +19,9 @@ import com.google.gson.JsonParser;
 
 @Component("kakao") //정확히 정해진 역할 없이 빈으로 정하고 싶으면 component 어노테이션
 public class KakaoAPI {
+	
+	@Value("${kakao.client.id}")
+	private String clientId;
 	
 	//토큰발급기능
 	public String getAccessToken(String code) {
@@ -30,7 +34,7 @@ public class KakaoAPI {
 		
 		//post의 폼데이터 형식 키=값&키=값...
 		String data = "grant_type=authorization_code"
-					  + "&client_id=fe1fc7ea1cb78cfda1e41f0835e6e806"
+					  + "&client_id=" + clientId
 					  + "&redirect_uri=" + redirect_uri
 					  + "&code=" + code;
 		

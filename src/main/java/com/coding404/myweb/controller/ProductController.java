@@ -62,7 +62,6 @@ public class ProductController {
 		//프로세스
 		//user_id란 이름으로 admin을 넣어놓고 사용할 예정, 사용할 값이 없어서 강제로
 		session.setAttribute("user_id", "admin");
-//		System.out.println(cri.toString());
 		
 		//로그인한 회원만 조회
 		//(가정)현재 로그인 되어있는 회원
@@ -75,7 +74,6 @@ public class ProductController {
 		//페이지네이션 처리
 		int total = productService.getTotal(user_id, cri);
 		PageVO pageVO = new PageVO(cri, total);
-//		System.out.println(pageVO.toString());
 		model.addAttribute("pageVO", pageVO);
 		
 		return "/product/productList";
@@ -97,9 +95,15 @@ public class ProductController {
 	@PostMapping("/registForm")
 	public String registForm(@Valid ProductVO vo, Errors errors, Model model,
 							 RedirectAttributes ra, //특정 속성을 리다이렉트되는 뷰 페이지에서 사용할 수 있도록 전달
+							 HttpSession session,
 							 @RequestParam("file") List<MultipartFile> list) {
-		
 	    
+		//session값과 prod_writer 비교 확인
+		String userId = (String) session.getAttribute("user_id");
+		if (!userId.equals(vo.getProd_writer())) {
+		    return "/error";
+		}
+		 
 		if (errors.hasErrors()) { // 유효성 검사
 		    List<FieldError> errorList = errors.getFieldErrors();
 		    for (FieldError err : errorList) {
@@ -145,11 +149,9 @@ public class ProductController {
 		return "redirect:/product/productList"; //목록으로
 	}
 	
-	
 	@ResponseBody
 	@GetMapping("/xxx")
 	public String xxx() {
 		return "경로";
 	}
-	
 }

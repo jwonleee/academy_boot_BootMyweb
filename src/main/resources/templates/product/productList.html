@@ -14,7 +14,6 @@
 					<div class="page_title">관리자검색</div>
 
 					<form id="productListForm" name="actionForm" action="productList" method="get" > <!-- name, action 달아주기 -->
-					
 					<!-- 
 					1. 검색폼 에서는 키워드, page, amount 데이터를 넘깁니다.
 					 -->
@@ -292,9 +291,8 @@
 						
 						str += '</div>';
 					}
-					
+					   //.filebox = 미리보기 폼
 					   $(".filebox").html(str);
-		               
 		               $(".filebox").on("click", "button", function(e) {
 		            	  
 		            	  var id = $(e.target).prev().prev().prev().prev().attr("id").replace('_file', '');

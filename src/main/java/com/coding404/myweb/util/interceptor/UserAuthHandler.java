@@ -15,14 +15,13 @@ public class UserAuthHandler implements HandlerInterceptor{
 	 * 	  afterComplete - 화면으로 가기 직전에 수행
 	 * 
 	 * 2. 인터셉터클래스를 bean으로 등록
-	 * 
 	 */
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		System.out.println("인터셉터 실행");
+		System.out.println("userAuth 인터셉터 실행");
 		
 		//현재 세션을 얻음
 		HttpSession session = request.getSession();
@@ -33,10 +32,6 @@ public class UserAuthHandler implements HandlerInterceptor{
 			response.sendRedirect(request.getContextPath() + "/user/login"); //로그인 페이지로 리디렉션
 			return false; //컨트롤러를 실행하지 않음
 		}
-		
 		return true; //컨트롤러 실행
 	}
-	
-	
-	
 }

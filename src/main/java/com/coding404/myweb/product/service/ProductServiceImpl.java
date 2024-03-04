@@ -108,7 +108,6 @@ public class ProductServiceImpl implements ProductService {
 				return 0; //실패의 의미로
 			}
 
-
 			//insert 이전에 prod_id가 필요한데, selectKey 방식으로 처리
 			ProductUploadVO prodVO = ProductUploadVO.builder()
 					.filename(filename)
@@ -118,7 +117,6 @@ public class ProductServiceImpl implements ProductService {
 					.build();
 
 			productMapper.registFile(prodVO);
-
 		} //end for문
 
 		return result; //성공시 1, 실패시 0

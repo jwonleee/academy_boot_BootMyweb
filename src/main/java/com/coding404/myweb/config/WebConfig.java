@@ -26,7 +26,6 @@ public class WebConfig implements WebMvcConfigurer{
 	//인터셉터 추가
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		
 //		registry.addInterceptor(userAuthHandler())
 //				.addPathPatterns("/main")
 //				.addPathPatterns("/product/*") //product 시작하는 경로 다 추가
@@ -41,7 +40,6 @@ public class WebConfig implements WebMvcConfigurer{
 				//.excludePathPatterns("/css/*")
 				//.excludePathPatterns("/img/*");
 				//REST API 패스에서 제외..? 해야함
-		
 		
 		registry.addInterceptor(menuHandler())
 				.addPathPatterns("/main")

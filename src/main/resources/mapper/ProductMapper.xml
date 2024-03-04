@@ -62,9 +62,7 @@
   									uuid,
   									prod_id,
   									prod_writer)
-  									
   		values(#{filename}, #{filepath}, #{uuid}, #{prod_id}, #{prod_writer})
-  	
   	</insert>
   	
 <select id="getList" resultType="ProductVO">

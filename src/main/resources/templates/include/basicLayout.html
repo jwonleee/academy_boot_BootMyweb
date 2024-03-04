@@ -35,7 +35,7 @@
 		<div class="header">
 				<h3 style="color: #fff; position: absolute; left: 20px; top: 27px;">coding404 - 연습용 입니다. 이에 대한 무단 복제 및 배포를 원칙적으로 금합니다.
 						원본파일 및 핸드폰 촬영, 동영상강좌 녹화를 통한 무단 복제 · 배포하는 경우 저작권법 제136조에 의한 저작재산권 침해 죄에 해당될 수 있으니 각별한 주의 바랍니다.</h3>
-				<span class="admin_id"><b style="color:#7866c9;">관리자</b>홍길동 님</span>
+				<span class="admin_id"><b style="color:#7866c9;">관리자</b> [[${session.user_id}]] 님</span>
 		</div>
 	</header>
 	
@@ -90,11 +90,11 @@
 				<div class="footer_top">
 						<!-- 상위 -->
 						<ul class="fl_right">
-								<li><a href="#"><span>Coding404 둘러보기</span></a></li>
+								<li><a th:href="@{/main}"><span>홈</span></a></li>
 								<li><a th:href="@{/product/productReg}"><span>상품등록</span></a></li>
-								<li><a href="#"><span>상품관리</span></a></li>
+								<li><a th:href="@{/product/productList}"><span>상품관리</span></a></li>
 								<li><a href="#"><span>상품수정</span></a></li>
-								<li><a href="#"><span>회원</span></a></li>
+								<li><a th:href="@{/user/userDetail}"><span>회원</span></a></li>
 								<li><a href="#"><span>고객센터</span></a></li>
 						</ul>
 				</div>
@@ -134,7 +134,7 @@
 </body>
 
 <script th:inline="javascript">
-	//console.log(JSON.parse('[[${uri}]]')) <!--캡쳐보면 필요한 값을 가지고 나갈 수 있음-->
+	console.log(JSON.parse('[[${uri}]]')); //필요한 값을 가지고 나갈 수 있음
 
 	/* 
 		메뉴선택 유지 - 
@@ -143,7 +143,7 @@
 		sub_menu_toggle ▶ a에 sub_menu_selectz 클래스
 	*/
 	var menu = JSON.parse('[[${uri}]]'); //postHandler에서 보내주는 uri
-
+	
 	
 	//1. 반복 안 돌리기
 	console.log($("a[href*='" + menu + "']"));
