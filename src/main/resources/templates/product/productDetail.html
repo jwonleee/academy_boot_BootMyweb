@@ -2,11 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <!-- ~{파일경로 :: 템플릿함수(~{:: 선택자}) } -->
-<th:block th:replace="~{./include/basicLayout :: layout( ~{:: .wrap} ) }">
+<th:block th:replace="~{./include/basicLayout :: layout( ~{:: .right_content} ) }">
 
-	<div class="wrap">
-		<div class="warp_inner">
-			<!-- left_menu end -->
 			<div class="right_content">
 				<div class="midiaq">
 					<div class="page_title">상품 관리 > <span class="page_subtitle">상품 상세/수정</span></div>
@@ -185,14 +182,10 @@
 						</div>
 					</form>
 				</div>
+				
 			</div>
 			<!-- right_content end -->
-		</div>
-		<div class="dim_layer">
-		</div>
-	</div>
-	<!-- wrap end -->
-
+		
 </th:block>
 
 <!-- 10/22 ckeditor 추가: style.js -->

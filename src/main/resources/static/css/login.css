@@ -11,6 +11,11 @@
   margin: 0 auto;
   width: 340px;
 }
+
+.loginInner {
+  padding: 55px 0;
+}
+
 .inputText {
   box-sizing: border-box;
   width: 100%;

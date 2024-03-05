@@ -2,12 +2,16 @@ package com.coding404.myweb.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.coding404.myweb.command.UserVO;
 import com.coding404.myweb.util.KakaoAPI;
 
 @Controller
@@ -32,7 +36,8 @@ public class UserController {
 		
 		//우리 데이터베이스에서 조회해서 로그인처리 ...하면 됨
 		
-		return "redirect:/main";
+//		return "redirect:/main";
+		return null;
 	}
 	
 	
@@ -44,6 +49,15 @@ public class UserController {
 	@GetMapping("/login")
 	public String login() {
 		return "user/login";
+	}
+	
+	@PostMapping("/login")
+	public String loginForm(UserVO vo) {
+		UserVO userVO = new UserVO();
+		userVO.setId("test123");
+		userVO.setPw("test1234");
+		System.out.println("이거이거왜 안나와");
+		return "redirect:/user/mypage";
 	}
 	
 	@GetMapping("/userDetail")

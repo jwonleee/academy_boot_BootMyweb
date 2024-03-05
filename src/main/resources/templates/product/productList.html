@@ -3,10 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 	<!-- ~{파일경로 :: 템플릿함수(~{:: 선택자}) } -->
-	<th:block th:replace="~{./include/basicLayout :: layout( ~{:: .wrap} ) }">
-
-	<div class="wrap">
-		<div class="warp_inner">
+	<dic th:replace="~{./include/basicLayout :: layout( ~{:: .right_content} ) }">
 
 			<!-- left_menu end -->
 			<div class="right_content">
@@ -147,7 +144,7 @@
 
 				</div>
 			</div>
-		</div>
+			<!-- right_content end -->
 
 	<!-- 검색시 페이지네이션 유지 하려고 amount 관리 -->
 	<script th:inline="javascript"> /* inline으로 해줘야 사용 가능, 템플릿있어서 block밖에 선언 */
@@ -234,8 +231,7 @@
 				</div>
 
 			</div>
-		</div>
-	</div><!-- end wrap -->
+		</div><!-- end modal-->
 	
 	</th:block>
 	
