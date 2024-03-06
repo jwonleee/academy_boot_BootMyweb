@@ -27,17 +27,18 @@ public class UserController {
 		System.out.println("인가코드:" + code);
 			
 		String token = kakaoAPI.getAccessToken(code);
-			
 		System.out.println("어세스토큰:" + token);
 		
 		Map<String, Object> map =  kakaoAPI.getUserInfo(token);
+		System.out.println("사용자데이터(닉네임, 이메일):" + map.toString());
 		
-		System.out.println("사용자데이터:" + map.toString());
+		//서비스 데이터베이스(Database)의 가입, 탈퇴 등 회원 정보 처리는 서비스에서 자체 구현
+		//카카오는 서비스 데이터에 접근하지 않으므로 회원 정보를 대신 저장하거나 삭제할 수 없음
+		//서비스 서버는 카카오로부터 받은 사용자 정보로 회원가입 되어 있는지 확인
+		//1. 이미 회원 - 해당 사용자의 로그인에 대한 세션 발급 후, 로그인 완료 처리
+		//2. 회원 X - 카카오에서 받은 정보로 서비스 데이터베이스에 회원가입 처리
 		
-		//우리 데이터베이스에서 조회해서 로그인처리 ...하면 됨
-		
-//		return "redirect:/main";
-		return null;
+		return "redirect:/main";
 	}
 	
 	

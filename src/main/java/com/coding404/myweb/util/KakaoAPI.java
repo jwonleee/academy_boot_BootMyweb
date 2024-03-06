@@ -20,6 +20,7 @@ import com.google.gson.JsonParser;
 @Component("kakao") //정확히 정해진 역할 없이 빈으로 정하고 싶으면 component 어노테이션
 public class KakaoAPI {
 	
+	//application.properties
 	@Value("${kakao.client.id}")
 	private String clientId;
 	
@@ -59,7 +60,6 @@ public class KakaoAPI {
 			System.out.println( "요청결과:" + conn.getResponseCode() );
 			
 			if(conn.getResponseCode() == 200 ) { //요청성공
-				
 				BufferedReader br =  new BufferedReader(new InputStreamReader( conn.getInputStream() ));
 				
 				String result = "";
@@ -67,7 +67,6 @@ public class KakaoAPI {
 				while( (str = br.readLine() ) != null ) { //한줄씩읽음 - 읽을값이 없다면 null
 					result += str;
 				}
-				
 				System.out.println(result);
 				
 				//제이슨 데이터 분해
@@ -105,9 +104,7 @@ public class KakaoAPI {
 			//헤더에 토큰정보를 추가
 			conn.setRequestProperty("Authorization", "Bearer " + access_token);
 			
-			//
 			System.out.println("토큰요청결과:" + conn.getResponseCode() );
-			
 			
 			if(conn.getResponseCode() == 200 ) {
 				BufferedReader br =  new BufferedReader(new InputStreamReader( conn.getInputStream() ));
@@ -133,13 +130,11 @@ public class KakaoAPI {
 		        //맵에 저장
 		        map.put("nickname", nickname);
 		        map.put("email", email);
-		        
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		
 		return map;
 	}
